@@ -2,6 +2,45 @@
 
 A full-stack WhatsApp clone built with Next.js, Express, and MongoDB.
 
+## Installation and Local Development
+
+1. Fetch from git:
+```shell
+git clone https://github.com/DonRaz/WhatsappClone.git
+```
+
+
+### Running Locally
+1. run on seperated terminals:
+- First terminal - Backend: (using npm)
+```shell
+cd server 
+npm install && npm run dev
+```
+- Second Terminal - Frontend (using bun)
+```shell
+cd /client/chat-whatsapp-clone
+bun install && bun run dev   
+```
+2. run single file:
+
+```bash
+# From project root
+./run-locally.sh
+```
+
+
+This script will:
+- Build the shared types
+- Start the server in the background
+- Start the client in the background
+- Allow you to stop both with Ctrl+C
+
+#### Notes:
+1. environment files needs to be renamed (remove the `.example`) and filled
+1. Make sure `server/.env` contains the correct `DATABASE_URL`
+
+
 ## Environment Variables Setup
 
 This project uses environment variables for configuration:
@@ -18,37 +57,6 @@ This project uses environment variables for configuration:
    - Generated automatically by the deploy script
    - Do not edit manually
 
-## Installation and Local Development
-
-### Setup
-1. Run on seperated terminals:
-   ```bash
-   # Install server dependencies
-   cd server 
-   npm install && npm run dev
-   
-   # Install client dependencies
-   cd ../client/chat-whatsapp-clone
-   bun install && bun run dev   
-   ```
-
-### Running Locally
-You can run the application using the provided script:
-```bash
-# From project root
-./run-locally.sh
-```
-
-This script will:
-- Build the shared types
-- Start the server in the background
-- Start the client in the background
-- Allow you to stop both with Ctrl+C
-
-Alternatively, you can run each part manually:
-1. Make sure `server/.env` contains the correct `DATABASE_URL`
-2. Run the server with `cd server && npm run dev`
-3. Run the frontend with `cd client/chat-whatsapp-clone && bun run dev`
 
 ### Project Cleanup
 Before submitting or deploying, you can clean up unnecessary files:
@@ -90,3 +98,21 @@ Edit at `shared/schemas/index.ts` or `shared/realtime/index.ts` and run:
     npm i @sraz-sw/fullstack-shared
 
 ```
+
+# Docs & Insights: 
+## Realtime Features:
+- [Realtime Architecture Overview](insights/Realtime-arch-overview.md)
+- [Realtime Documentation](insights/realtimeDocs.md)
+- [Realtime Implementation Plan](insights/implementationPlans/realtime-project-wide-impl-plan.md)
+
+## File Storage: 
+- [File Storage Abstraction](insights/File%20Storage%20Abstraction.md)
+- [Implementation Plan](insights/implementationPlans/impl-remote-file-storage.md)
+
+## React Query
+- [React Query Cheatsheet](insights/React%20Query%20Cheatsheet%20for%20WhatsApp%20Clone.md)
+- [Usage - Auth hook](client/chat-whatsapp-clone/src/hooks/useAuth.ts)
+- [Usage - conversations](client/chat-whatsapp-clone/src/hooks/useConversations.ts)
+
+## Other Documentation:
+- [Environment Variables](insights/environmentVariable.md)
