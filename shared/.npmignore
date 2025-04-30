@@ -1,0 +1,24 @@
+# Source
+src/
+*.ts
+!*.d.ts
+
+# Preserve compiled directories (dist/ is included via files in package.json)
+!dist/**/*.js
+!dist/**/*.d.ts
+
+# Config files
+tsconfig.json
+.gitignore
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Dependencies
+node_modules/
+
+# Misc
+.vscode/
+.idea/ 
