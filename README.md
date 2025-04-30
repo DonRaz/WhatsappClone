@@ -21,19 +21,15 @@ This project uses environment variables for configuration:
 ## Installation and Local Development
 
 ### Setup
-1. Install dependencies for each part of the application:
+1. Run on seperated terminals:
    ```bash
    # Install server dependencies
-   cd server
-   npm install
+   cd server 
+   npm install && npm run dev
    
    # Install client dependencies
    cd ../client/chat-whatsapp-clone
-   bun install
-   
-   # Install shared dependencies
-   cd ../../shared
-   npm install
+   bun install && bun run dev   
    ```
 
 ### Running Locally
@@ -81,3 +77,16 @@ In production, Pusher is used for real-time communication.
 - Group conversations
 - Message status (seen/delivered)
 - Responsive design 
+
+### Update types:  
+Edit at `shared/schemas/index.ts` or `shared/realtime/index.ts` and run:
+```bash
+    cd FullstackFinalProject/shared
+    npm run build
+    npm version patch && npm publish
+    cd FullstackFinalProject/client/chat-whatsapp-clone
+    bun i @sraz-sw/fullstack-shared
+    cd FullstackFinalProject/server
+    npm i @sraz-sw/fullstack-shared
+
+```
