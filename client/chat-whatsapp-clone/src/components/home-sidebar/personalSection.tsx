@@ -1,6 +1,6 @@
 "use client";
 
-import { HomeIcon, MessageCircleIcon, UsersIcon, PhoneCallIcon, HistoryIcon, HeartIcon, ImageIcon } from "lucide-react";
+import { HomeIcon, MessageCircleIcon, UsersIcon, PhoneCallIcon, HistoryIcon, HeartIcon, ImageIcon, BabyIcon, MusicIcon } from "lucide-react";
 import { SidebarGroup, 
     SidebarGroupContent, 
     SidebarMenu, 
@@ -10,30 +10,55 @@ import { SidebarGroup,
 import Link from "next/link";
 
 const items = [
+// {
+//     title: "History",
+//     url: "/history",
+//     icon: <HistoryIcon />,
+//     auth: true,
+// },
+// {
+//     title: "Liked media",
+//     url: "/liked-media",
+//     icon: <HeartIcon />,
+//     auth: true,
+// },
+// {
+//     title: "All media",
+//     url: "/all-media",
+//     icon: <ImageIcon />,
+//     auth: true,
+// },
 {
-    title: "History",
-    url: "/history",
-    icon: <HistoryIcon />,
-    auth: true,
-},
-{
-    title: "Liked media",
-    url: "/liked-media",
-    icon: <HeartIcon />,
-    auth: true,
-},
-{
-    title: "All media",
-    url: "/all-media",
+    title: "Portfolio",
+    url: "/portfolio-sraz",
     icon: <ImageIcon />,
     auth: true,
 },
+{
+    title: "Baby Mood Detector",
+    url: "mood-detector",
+    icon: <BabyIcon />,
+    auth: true,
+},
+{
+    title: "Chat with AI",
+    url: "chat-with-ai",
+    icon: <MessageCircleIcon />,
+    auth: true,
+},
+{
+    title: "Dtrack Finder",
+    url: "dtrack-finder",
+    icon: <MusicIcon />,
+    auth: true,
+},
+
 ]
 
 const PersonalSection = () => {
     return (
         <SidebarGroup>
-            <SidebarGroupLabel>Personal</SidebarGroupLabel>
+            <SidebarGroupLabel>Portfolio</SidebarGroupLabel>
             <SidebarGroupContent>
                 <SidebarMenu>
                     {items.map((item) => (

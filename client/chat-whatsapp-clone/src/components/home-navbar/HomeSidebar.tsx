@@ -11,7 +11,7 @@ const HomeSidebar = () => {
             <SidebarContent className="bg-background">
                 <MainSection/>
                 <Separator/>
-                {/* <PersonalSection/> */}
+                <PersonalSection/>
                 <div className="mt-auto">
                     <Separator/>
                     <BottomSection/>

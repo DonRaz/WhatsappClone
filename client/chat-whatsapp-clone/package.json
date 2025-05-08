@@ -49,6 +49,8 @@
     "@tanstack/react-query-devtools": "^5.72.0",
     "@tanstack/react-query-persist-client": "^5.72.0",
     "@tanstack/react-table": "^8.21.2",
+    "@tensorflow-models/blazeface": "^0.1.0",
+    "@tensorflow/tfjs": "^4.22.0",
     "@uploadthing/react": "^7.3.0",
     "axios": "^1.8.4",
     "class-variance-authority": "^0.7.1",
@@ -59,6 +61,7 @@
     "framer-motion": "^12.8.0",
     "input-otp": "^1.4.2",
     "localforage": "^1.10.0",
+    "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.503.0",
     "next": "15.2.4",
     "next-themes": "^0.4.6",
@@ -67,8 +70,11 @@
     "react-day-picker": "8.10.1",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.55.0",
+    "react-image-file-resizer": "^0.4.8",
+    "react-player": "^2.16.0",
     "react-resizable-panels": "^2.1.7",
     "recharts": "^2.15.2",
+    "screenfull": "^6.0.2",
     "socket.io-client": "^4.8.1",
     "sonner": "^2.0.3",
     "tailwind-merge": "^3.0.2",
@@ -76,18 +82,19 @@
     "uploadthing": "^7.6.0",
     "uuid": "^11.1.0",
     "vaul": "^1.1.2",
-    "zod": "^3.24.2",
+    "zod": "^3.24.4",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
-    "@eslint/eslintrc": "^3"
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }

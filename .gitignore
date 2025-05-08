@@ -10,3 +10,4 @@
 
 # Rest of existing .gitignore content
 # ... existing code ... 
+.vercel

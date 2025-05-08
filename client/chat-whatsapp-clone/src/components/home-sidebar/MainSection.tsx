@@ -1,6 +1,6 @@
 "use client";
 
-import { HomeIcon, MessageCircleIcon, UsersIcon, PhoneCallIcon, DatabaseIcon } from "lucide-react";
+import { HomeIcon, MessageCircleIcon, UsersIcon, PhoneCallIcon, DatabaseIcon, ImageIcon } from "lucide-react";
 import { SidebarGroup, 
     SidebarGroupContent, 
     SidebarMenu, 
@@ -22,17 +22,18 @@ const items = [
 //     auth: true,
 // },
 {
-    title: "Chats",
-    url: "/conversations",
-    icon: <MessageCircleIcon />,
-    auth: true,
-},
-{
     title: "Home",
     url: "/",
     icon: <HomeIcon />,
     auth: false,
 },
+{
+    title: "Chats",
+    url: "/conversations",
+    icon: <MessageCircleIcon />,
+    auth: true,
+},
+
 
 // {
 //     title: "Groups",
