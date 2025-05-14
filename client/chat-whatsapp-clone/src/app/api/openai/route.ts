@@ -37,70 +37,123 @@ const chatRequestSchema = z.object({
 const OPENAI_URL = "https://api.openai.com/v1/chat/completions" as const;
 
 export async function POST(request: Request) {
-  const requestBody = await request.json();
-  console.log('openAI route - requestBody =', requestBody);
-  const parsedRequest = chatRequestSchema.safeParse(requestBody);
+  try {
+    const requestBody = await request.json().catch(error => {
+      console.error("Failed to parse request body", error);
+      return null;
+    });
+    
+    if (!requestBody) {
+      return NextResponse.json({ 
+        error: "Invalid request body", 
+        success: false 
+      }, { status: 400 });
+    }
+    
+    console.log('openAI route - requestBody =', requestBody);
+    const parsedRequest = chatRequestSchema.safeParse(requestBody);
 
-  if (!parsedRequest.success) {
-    console.log("Invalid schema", parsedRequest.error);
-    return NextResponse.json({ error: "Invalid schema", success: false });
-  }
+    if (!parsedRequest.success) {
+      console.log("Invalid schema", parsedRequest.error);
+      return NextResponse.json({ 
+        error: "Invalid schema: " + parsedRequest.error.message, 
+        success: false 
+      }, { status: 400 });
+    }
 
-  // Clone the messages and replace image URLs with a placeholder
-  const clonedMessages = parsedRequest.data.messages.map((message) => ({
-    ...message,
-    content: message.content.map((content) => {
-      if (content.type === "image_url") {
+    // Clone the messages and keep image URLs intact
+    const clonedMessages = parsedRequest.data.messages.map((message) => ({
+      ...message,
+      content: message.content.map((content) => {
+        if (content.type === "image_url") {
+          return {
+            type: content.type,
+            image_url: {
+              url: content.image_url.url, // data URL (base64)
+            },
+          };
+        }
+        return content;
+      }),
+    }));
+
+    // Add instruction message
+    clonedMessages.unshift({
+      role: "system",
+      content: [
+        {
+          type: "text",
+          text: translatedInstructions,
+        }
+      ]
+    });
+
+    // Format messages for OpenAI API
+    // OpenAI API accepts either a string or an array of content objects
+    const apiMessages = clonedMessages.map(message => {
+      // If all content is text, join them
+      const isAllText = message.content.every(c => c.type === "text");
+      
+      if (isAllText) {
         return {
-          type: content.type,
-          image_url: {
-            url: content.image_url.url, // it's actually the bytes of the image in this case (api supports it)
-          },
+          role: message.role,
+          content: message.content.map(c => c.type === 'text' ? c.text : '').join('\n')
         };
       }
-      return content;
-    }),
-  }));
+      
+      // Otherwise, keep the array structure for mixed content
+      return {
+        role: message.role,
+        content: message.content
+      };
+    });
 
-  // Add instruction message
-  clonedMessages.unshift({
-    role: "system",
-    content: [
-      {
-        type: "text",
-        text: translatedInstructions,
-      }
-    ]
-  });
+    const payload = {
+      model: "gpt-4o-mini", // gpt-4o
+      messages: apiMessages,
+      max_tokens: 500,
+    };
 
-  console.log("clonedMessages", JSON.stringify(clonedMessages));
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+    };
 
-  const payload = {
-    model: "gpt-4o-mini", // gpt-4o
-    messages: clonedMessages.map(message => ({
-      role: message.role,
-      content: message.content.map(c => c.type === 'text' ? c.text : c.image_url.url).join('\n')
-    })),
-    max_tokens: 100,
-  };
-
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-  };
-
-  console.log("openAI route .ts  - payload Stringified = __________________________")
-  console.log(JSON.stringify({ headers, payload }, null, 2))
-
-  try {
-    const response = await axios.post(OPENAI_URL, payload, { headers });
+    console.log("Sending payload to OpenAI...");
+    
+    const response = await axios.post(OPENAI_URL, payload, { 
+      headers,
+      timeout: 30000 // 30 second timeout
+    });
+    
     const firstMessage = response.data.choices[0].message;
-    console.log('firstMessage = ', firstMessage);
+    console.log('Received response from OpenAI:', firstMessage);
+    
     return NextResponse.json({ success: true, message: response.data });
-  } catch (error) {
-    console.log("error", error);
+  } catch (error: any) {
+    console.error("API error:", error);
+    
+    // Handle different error types
+    if (axios.isAxiosError(error)) {
+      const statusCode = error.response?.status || 500;
+      const errorMessage = error.response?.data?.error?.message || error.message || "Unknown API error";
+      
+      return NextResponse.json(
+        { 
+          success: false, 
+          message: null, 
+          error: `API error (${statusCode}): ${errorMessage}` 
+        },
+        { status: statusCode }
+      );
+    }
+    
     return NextResponse.json(
-      { success: false, message: null },
+      { 
+        success: false, 
+        message: null, 
+        error: error.message || "Unknown error occurred" 
+      },
       { status: 500 }
     );
   }

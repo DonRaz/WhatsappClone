@@ -10,7 +10,7 @@ const ChatWithAI = async () => {
   return (
 
 
-      <div className="flex items-center justify-center h-[calc(100svh-10rem)] mt-[10rem] bg-white1_dd w-[100swh]">
+      <div className="flex items-center bg-background justify-center h-[calc(100svh-5rem)] my-auto rounded max-w-xl mx-auto">
         {/* suspense */}
         <Suspense fallback={<div>Loading...</div>}>
           <ChatWithAIComponent/> 
