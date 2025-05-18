@@ -12,10 +12,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Loader2, Play, Pause, SkipForward, Volume2, Maximize, Minimize, Smile, Power } from 'lucide-react'
 import { toast, Toaster } from 'sonner'
 import ReactPlayer from 'react-player';
-import { useImagePrompt } from '../hooks/useAiDetectionOnImage'
-import DJPlayer from './DjPlayer'
+import { useImagePrompt } from '../hooks/useAiDetectionOnImage2'
+import DJPlayer from './DjPlayer2'
 import debounce from 'lodash.debounce';
-
+import '@tensorflow/tfjs-backend-webgl';
+import '@tensorflow/tfjs-backend-cpu';
 
 type SongMood = {
   id: string
@@ -61,7 +62,6 @@ interface ControlPanelProps {
   detectionDelay: number;
   onSkipSong?: () => void;
 }
-
 export function ControlPanel({ onSkipSong, onManualMoodChange, onDetectionDelayChange, detectionDelay }: ControlPanelProps) {
   return (
     <Card className="mt-6">
@@ -114,10 +114,11 @@ export function ControlPanel({ onSkipSong, onManualMoodChange, onDetectionDelayC
 // import { Power } from 'lucide-react'
 
 interface VideoContainerProps {
-  videoRef: React.RefObject<HTMLVideoElement>;
+  videoRef: React.RefObject<HTMLVideoElement | null>;
   currentMood: string;
   status: string;
   detectionsEnabled: boolean;
+  // setDetectionsEnabled: (enabled: boolean) => void;
   toggleDetections: () => void;
 }
 
@@ -125,7 +126,7 @@ export function VideoContainer({ videoRef, currentMood, status, detectionsEnable
   return (
     <Card className="w-full md:w-3/5">
       <CardContent className="p-4">
-        <div className="relative aspect-video bg-gray-200 rounded-lg overflow-hidden">
+        <div className="relative aspect-video bg-muted-foreground/10 rounded-lg overflow-hidden">
           <video ref={videoRef} autoPlay playsInline className="w-full h-full object-cover" />
           <Button
             onClick={() => toggleDetections()}
@@ -133,17 +134,18 @@ export function VideoContainer({ videoRef, currentMood, status, detectionsEnable
             size="icon"
             className="absolute bottom-4 right-4"
           >
-            <Power className={`h-4 w-4 ${detectionsEnabled ? 'text-green-500' : 'text-red-500'}`} />
+            <Power className={`h-4 w-4 ${detectionsEnabled ? 'text-primary/90' : 'text-destructive'}`} />
           </Button>
         </div>
         <div className="text-center text-xl font-semibold mt-4">
           Current Mood: <span className="text-2xl">{currentMood}</span>
         </div>
-        <div className="text-center font-bold mt-2 text-gray-600">{status}</div>
+        <div className="text-center font-bold mt-2 text-muted-foreground">{status}</div>
       </CardContent>
     </Card>
   );
 }
+
 
 // FILE __________________ MusicPlayer.tsx ____________
 // import React, { useState, useRef, useCallback } from 'react';
@@ -238,20 +240,20 @@ export function MusicPlayer({
   };
 
   return (
-    <div ref={containerRef} className={`relative w-full max-w-3xl mx-auto aspect-video bg-gray-200 rounded-lg overflow-hidden ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
+    <div ref={containerRef} className={`relative w-full max-w-3xl mx-auto aspect-video bg-muted-foreground/10 rounded-lg overflow-hidden ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
       {currentSong && (
         <ReactPlayer
           ref={playerRef}
           url={getPlayerUrl()}
           playing={isPlaying}
-          volume={initialVolume}
+          volume={localVolume}
           width="100%"
           height="100%"
           onEnded={onNextSong}
-          onError={(e: any) => console.error('Player error:', e)}
+          onError={(e) => console.error('Player error:', e)}
         />
       )}
-      <div className="absolute bottom-0 left-0 right-0 bg-gray-800 bg-opacity-50 p-4">
+      <div className="absolute bottom-0 left-0 right-0 bg-background/80 bg-opacity-50 p-4">
         <div className="flex items-center justify-between">
           <div>
             <Button onClick={onPlayPause} variant="outline" size="icon">
@@ -262,9 +264,9 @@ export function MusicPlayer({
             </Button>
           </div>
           <div className="flex items-center space-x-2">
-            <Volume2 className="h-4 w-4 text-white" />
+            <Volume2 className="h-4 w-4 text-primary-foreground" />
             <Slider
-              value={[localVolume]}
+              value={[localVolume * 100]}
               max={100}
               step={1}
               className="w-24"
@@ -287,14 +289,13 @@ export function MusicPlayer({
         </div>
       </div>
       {currentSong && (
-        <div className="absolute top-4 left-4 bg-gray-800 bg-opacity-50 p-2 rounded">
-          <p className="text-white text-sm">Now Playing: {currentSong.title}</p>
+        <div className="absolute top-4 left-4 bg-background/80 bg-opacity-50 p-2 rounded">
+          <p className="text-primary-foreground text-sm">Now Playing: {currentSong.title}</p>
         </div>
       )}
     </div>
   );
 }
-
 
 // FILE __________________ MoodLog.tsx ____________
 
@@ -321,7 +322,7 @@ export function MoodLog({ moodLog }: MoodLogProps) {
       <CardContent className="h-[400px] overflow-y-auto">
         <ul className="space-y-4 ">
           {moodLog.map((entry, index) => (
-            <li key={index} className="bg-gray-100 p-2 rounded-md flex items-center">
+            <li key={index} className="bg-secondary p-2 rounded-md flex items-center">
               {entry.image ? (
                 <img 
                   src={entry.image} 
@@ -329,14 +330,14 @@ export function MoodLog({ moodLog }: MoodLogProps) {
                   className="w-16 h-16 object-cover rounded-full mr-4"
                 />
               ) : (
-                <div className="w-16 h-16 bg-gray-300 rounded-full mr-4 flex items-center justify-center">
-                  <Smile className="w-8 h-8 text-gray-500" />
+                <div className="w-16 h-16 bg-muted-foreground/20 rounded-full mr-4 flex items-center justify-center">
+                  <Smile className="w-8 h-8 text-muted-foreground" />
                 </div>
               )}
               <div className="flex-grow">
                 <div className="flex justify-between items-center">
                   <span className="text-2xl">{entry.mood}</span>
-                  <span className="text-sm text-gray-600">{entry.time}</span>
+                  <span className="text-sm text-muted-foreground">{entry.time}</span>
                 </div>
               </div>
             </li>
@@ -401,8 +402,7 @@ export function BabyMoodDetectorComponent() {
   const [detectionDelay, setDetectionDelay] = useState(DETECTION_DELAY); // _ DETECTION_DELAY __
   const [detectionsEnabled, setDetectionsEnabled] = useState(true);
   const [currentSong, setCurrentSong] = useState<SongMood | null>(null);
-  const [cameraError, setCameraError] = useState<string | null>(null);
-
+  const [isDetecting, setIsDetecting] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -441,6 +441,11 @@ export function BabyMoodDetectorComponent() {
 
   useEffect(() => {
     setupDetectionInterval();
+    return () => {
+      if (detectionIntervalRef.current) {
+        clearInterval(detectionIntervalRef.current);
+      }
+    };
   }, [detectionDelay, detectionsEnabled]);
 
   const init = async () => {
@@ -448,17 +453,11 @@ export function BabyMoodDetectorComponent() {
       await setupCamera();
       setLoading(false);
       await loadModel();
-      detectionCycle();
+      // Don't call detectionCycle immediately, let the interval handle it
+      // detectionCycle();
     } catch (error) {
       console.error('Error initializing app:', error);
-      setLoading(false);
-      setStatus('Error loading. Please check camera access and refresh.');
-      
-      // Don't fail silently - show error in UI
-      if (!cameraError) {
-        const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
-        setCameraError(errorMessage);
-      }
+      setStatus('Error loading. Please refresh and try again.');
     }
   };
 
@@ -483,25 +482,13 @@ export function BabyMoodDetectorComponent() {
 
   const setupCamera = async () => {
     if (!videoRef.current) return;
-    
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } });
-      videoRef.current.srcObject = stream;
-      setCameraError(null); // Clear any previous errors
-      
-      return new Promise<void>((resolve) => {
-        if (videoRef.current) {
-          videoRef.current.onloadedmetadata = () => resolve();
-        }
-      });
-    } catch (error) {
-      console.error('Error accessing camera:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Unable to access camera';
-      setCameraError(errorMessage);
-      setStatus("Camera access error");
-      setDetectionsEnabled(false);
-      return Promise.reject(error);
-    }
+    const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } });
+    videoRef.current.srcObject = stream;
+    return new Promise<void>((resolve) => {
+      if (videoRef.current) {
+        videoRef.current.onloadedmetadata = () => resolve();
+      }
+    });
   };
 
   const loadModel = async () => {
@@ -521,31 +508,24 @@ export function BabyMoodDetectorComponent() {
     if (!faceDetected) {
       playNoFaceAlert();
     }
-
-    // toast(faceDetected ? 'Face detected!' : 'No face detected', {
-    //   duration: 53000,
-    //   position: 'bottom-center',
-    //   // style: { marginTop: '6rem' },
-    // })    
-    // if (isFullscreen) {
-      if (faceDetected) {
-        toast.success('Face detected!', {
-          position: 'bottom-center',
-          action: {
-            label: 'Disable for 30min',
-            onClick: () => disableDetections(),
-          },
-        });
-      } else {
-        toast.error('No face detected', {
-          position: 'bottom-center',
-          action: {
-            label: 'Disable for 30min',
-            onClick: () => disableDetections(),
-          },
-        });
-      }
-    // }
+  
+    if (faceDetected) {
+      toast.success('Face detected!', {
+        position: 'bottom-center',
+        action: {
+          label: 'Disable for 30min',
+          onClick: () => disableDetections(),
+        },
+      });
+    } else {
+      toast.error('No face detected', {
+        position: 'bottom-center',
+        action: {
+          label: 'Disable for 30min',
+          onClick: () => disableDetections(),
+        },
+      });
+    }
 
     return faceDetected;
   };
@@ -561,29 +541,19 @@ export function BabyMoodDetectorComponent() {
     }
   }
 
-  const enableDetectionNow = () => {
+  const enableDetectionNow = () =>{
     setDetectionsEnabled(true);
-    setCameraError(null); // Clear any previous errors when enabling
-    setupCamera().catch(error => {
-      console.error('Failed to re-enable camera:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Unable to access camera';
-      setCameraError(errorMessage);
-    });     
-  };
-
+    setupCamera();     
+  }
   const disableDetections = (minutes: number = 30) => {
     setDetectionsEnabled(false);
     if (videoRef.current && videoRef.current.srcObject) {
       const tracks = (videoRef.current.srcObject as MediaStream).getTracks();
       tracks.forEach(track => track.stop());
     }
-    
-    // Only set timeout if we're not in an error state
-    if (!cameraError) {
-      setTimeout(() => {
-        enableDetectionNow();
-      }, minutes * 60 * 1000); // 30 minutes
-    }
+    setTimeout(() => {
+      enableDetectionNow()
+    }, minutes * 60 * 1000); // 30 minutes
   };
 
   const playNoFaceAlert = () => {
@@ -621,7 +591,7 @@ export function BabyMoodDetectorComponent() {
 
    const extractCoordinates = (tensor: [number, number] | tf.Tensor1D): [number, number] => {
     if (Array.isArray(tensor)) {
-      return tensor as [number, number];
+      return tensor;
     }
     // If it's a tensor, get its values synchronously
     return [tensor.dataSync()[0], tensor.dataSync()[1]];
@@ -677,59 +647,54 @@ export function BabyMoodDetectorComponent() {
 
 
   const detectionCycle = useCallback(async () => {
-    if (!detectionsEnabled) return
+    if (!detectionsEnabled || isDetecting) return;
 
-    // first making sure we found face (if not alerting user) via status
-    const faceDetected = await detectFace()
-    if (faceDetected) {
-      await detectMood()
-    }
-    else{
-      setStatus("Unable to see face...")  
-    }
+    try {
+      setIsDetecting(true);
+      // first making sure we found face (if not alerting user) via status
+      const faceDetected = await detectFace();
+      if (faceDetected) {
+        await detectMood();
+      }
+      else {
+        setStatus("Unable to see face...");  
+      }
 
-    setStatus("Waiting for next detection cycle...")
-  }, [detectionsEnabled])
+      setStatus("Waiting for next detection cycle...");
+    } finally {
+      setIsDetecting(false);
+    }
+  }, [detectionsEnabled, isDetecting]);
 
   useEffect(() => {
     const intervalId = setInterval(detectionCycle, detectionDelay)
     return () => clearInterval(intervalId)
   }, [detectionCycle, detectionDelay])
 
-  // Add debounced mood change handler
-  const debouncedMoodChange = useCallback(
-    debounce((newMood: string, newFaceImage: string | null, isManualChange: boolean) => {
-      setMoodLog(prevLog => [{
-        mood: newMood,
-        time: new Date().toLocaleTimeString(),
-        image: newFaceImage
-      }, ...prevLog.slice(0, 9)]);
-      
-      // Delay setting current mood to avoid rapid playlist changes
-      setTimeout(() => {
-        setCurrentMood(newMood);
-      }, 500);
-    }, 2000),
-    [setMoodLog, setCurrentMood]
-  );
+
 
   const updateMoodLog = useCallback((mood: string, faceImage: string | null, isManual: boolean = false) => {
-    // Skip update if mood hasn't changed and it's not a manual change
+    // Check if this is the same as current mood and not a manual update
     if (mood === currentMood && !isManual) return;
     
-    // Use immediate update for manual changes, debounced for automatic detection
-    if (isManual) {
-      setMoodLog(prevLog => [{
+    // Also check the most recent entry to prevent duplicates even if currentMood hasn't updated yet
+    setMoodLog(prevLog => {
+      // If the log has entries and the last entry has the same mood (and wasn't manual), don't add
+      if (prevLog.length > 0 && prevLog[0].mood === mood && !isManual) {
+        return prevLog;
+      }
+      
+      // Otherwise add the new entry
+      return [{
         mood,
         time: new Date().toLocaleTimeString(),
         image: faceImage
-      }, ...prevLog.slice(0, 9)]);
-      
-      setCurrentMood(mood);
-    } else {
-      debouncedMoodChange(mood, faceImage, isManual);
-    }
-  }, [currentMood, debouncedMoodChange]);
+      }, ...prevLog.slice(0, 9)];
+    });
+    
+    setCurrentMood(mood);
+  }, [currentMood]);
+
 
   const handleManualMoodChange = (mood: string) => {
     updateMoodLog(mood, null, true);
@@ -755,80 +720,37 @@ export function BabyMoodDetectorComponent() {
       }
 
       const moodResult = await sendImagePrompt(faceImage);
-      if (!moodResult?.moods) {
+      if (!moodResult || !moodResult.moods) {
         setStatus("Invalid mood detection result");
+        toast.error("Failed to detect mood. Please try again.");
         return;
       }
 
-      const moodEntries = Object.entries(moodResult.moods);
-      const dominantMood = moodEntries.reduce((a, b) => a[1] > b[1] ? a : b)[0];
+      const dominantMood = Object.entries(moodResult.moods)
+        .reduce((a, b) => a[1] > b[1] ? a : b)[0];
 
       updateMoodLog(dominantMood, faceImage, false);
       setStatus(`Mood detected: ${dominantMood}`);
       
+      // Show mood scores as toast
+      const formattedScores = Object.entries(moodResult.moods)
+        .map(([m, score]) => `${m}: ${(score * 100).toFixed(1)}%`)
+        .join(', ');
+      
+      toast.success(
+        <div>
+          <p>Dominant mood: {dominantMood}</p>
+          <p className="text-sm mt-1">{formattedScores}</p>
+        </div>
+      );
+      
     } catch (error) {
       console.error('Error detecting mood:', error);
       setStatus("Couldn't detect mood");
+      toast.error("Error detecting mood");
     }
-  }, [detectionsEnabled, updateMoodLog, sendImagePrompt]);
+  }, [detectionsEnabled, updateMoodLog, sendImagePrompt, videoRef, modelRef, captureFaceImage]);
 
-  // const detectMood = async () => {
-  //   setStatus("Detecting mood...");
-  //   if (!videoRef.current || !modelRef.current) return;
-  //   const predictions: blazeface.NormalizedFace[] = await modelRef.current.estimateFaces(videoRef.current, false);
-  //   if (predictions.length > 0) {
-  //     const faceImage = await captureFaceImage(predictions[0]);
-  //     if (faceImage) {
-  //       try {
-  //         console.log("Sending image to AI detection...");
-  //         const moodResult = await sendImagePrompt(
-  //           faceImage,
-  //           "Analyze the mood of the baby in this image. Provide a JSON object with moods as keys and their certainty scores (0-1) as values.",
-  //           150
-  //         );
-          
-  //         console.log("Mood detection result:", moodResult);
-          
-  //         if (moodResult && moodResult.moods) {
-  //           const dominantMood = Object.entries(moodResult.moods).reduce((a, b) => a[1] > b[1] ? a : b)[0];
-  //           updateMoodLog(dominantMood, faceImage, false);
-  //           setStatus(`Mood detected: ${dominantMood}`);
-  //           showMoodAlert(dominantMood, moodResult.moods);
-  //           setLastDetectedMood(dominantMood);
-  //         } else {
-  //           setStatus("Invalid mood detection result");
-  //         }
-  //       } catch (error) {
-  //         console.error('Error detecting mood:', error);
-  //         setStatus("Couldn't detect mood");
-  //       }
-  //     } else {
-  //       setStatus("Couldn't capture face image");
-  //     }
-  //   } else {
-  //     setStatus("No face detected");
-  //   }
-  // };
-
-  // const debounce = (func: Function, delay: number) => {
-  //   let timeoutId: NodeJS.Timeout
-  //   return (...args: any[]) => {
-  //     clearTimeout(timeoutId)
-  //     timeoutId = setTimeout(() => func(...args), delay)
-  //   }
-  // }
-
-  // const debouncedUpdateMoodLog = debounce((mood: string, faceImage: string | null) => {
-  //   if (mood !== null && mood !== currentMood) {
-  //     setMoodLog(prevLog => [{mood, time: new Date().toLocaleTimeString(), image: faceImage}, ...prevLog.slice(0, 9)])
-  //     setCurrentMood(mood)
-  //     // setIsPlaying(true)
-  //   }
-  // }, 1000)
-
-  // const updateMoodLog = (mood: string, faceImage: string | null, isManual: boolean = false) => {
-  //   debouncedUpdateMoodLog(mood, faceImage)
-  // }
 
   const handleDetectionDelayChange = (value: string) => {
     setDetectionDelay(parseInt(value) * 1000);
@@ -840,57 +762,40 @@ export function BabyMoodDetectorComponent() {
   };
 
   return (
-    <div className="w-full max-w-6xl" ref={containerRef}>
+      <div className="w-full max-w-6xl" ref={containerRef}>
       <Toaster />
       {loading && <LoadingOverlay />}
       <div className='flex flex-col md:flex-row justify-between gap-6'>
-        <DJPlayer
-          songs={songsHardCoded}
-          currentMood={currentMood}
-          onCurrentSongChange={handleCurrentSongChange}
-        />
-        <ControlPanel
-          onManualMoodChange={handleManualMoodChange}
-          onDetectionDelayChange={handleDetectionDelayChange}
-          detectionDelay={detectionDelay / 1000}
-        />
+      {/* <DJ
+        songs={songsHardCoded}
+        currentMood={currentMood}
+        onCurrentSongChange={handleCurrentSongChange}
+      /> */}
+      <DJPlayer
+        songs={songsHardCoded}
+        currentMood={currentMood}
+        onCurrentSongChange={handleCurrentSongChange}
+      />
+      <ControlPanel
+        onManualMoodChange={handleManualMoodChange}
+        onDetectionDelayChange={handleDetectionDelayChange}
+        detectionDelay={detectionDelay / 1000}
+      />
+        
       </div>
 
+
       <div className="flex flex-col md:flex-row justify-between gap-6">
-        {cameraError ? (
-          <Card className="w-full md:w-3/5">
-            <CardContent className="p-6">
-              <div className="flex flex-col items-center justify-center min-h-[300px] bg-gray-100 rounded-lg p-4 text-center">
-                <div className="text-red-500 mb-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="8" x2="12" y2="12"></line>
-                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold mb-2">Camera Access Error</h3>
-                <p className="text-muted-foreground mb-4">{cameraError}</p>
-                <p className="text-sm text-muted-foreground mb-6">
-                  This demo requires camera access. Please check your camera permissions, 
-                  make sure your device has a working camera, and refresh the page.
-                </p>
-                <Button onClick={() => enableDetectionNow()}>
-                  Try Again
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ) : (
-          <VideoContainer
-            videoRef={videoRef as React.RefObject<HTMLVideoElement>}
-            currentMood={currentMood}
-            status={status}
-            detectionsEnabled={detectionsEnabled}
-            toggleDetections={toggleDetections}
-          />
-        )}
-        
-        <MoodLog moodLog={moodLog} />
+        <VideoContainer
+          videoRef={videoRef}
+          currentMood={currentMood}
+          status={status}
+          detectionsEnabled={detectionsEnabled}
+          // setDetectionsEnabled={setDetectionsEnabled}
+          toggleDetections={toggleDetections}
+        />
+      <MoodLog moodLog={moodLog} />
+
       </div>
       <canvas ref={canvasRef} style={{ display: 'none' }} />
       <audio ref={audioRef} src="/sounds/segment_1.mp3" />

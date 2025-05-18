@@ -1,5 +1,17 @@
 import type { NextConfig } from "next";
 
+// Content Security Policy defined as an array for better readability
+const cspDirectives = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.youtube.com https://s.ytimg.com",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob: https://utfs.io https://i.ytimg.com",
+  "font-src 'self'",
+  "frame-src 'self' https://www.youtube.com",
+  "connect-src 'self' data: blob: https://*.vercel.app https://*.vercel-insights.com http://localhost:* https://* ws: wss:"
+];
+
+
 // Modified security headers to allow YouTube
 const securityHeaders = [
   {
@@ -28,7 +40,7 @@ const securityHeaders = [
   },
   {
     key: 'Content-Security-Policy',
-    value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.youtube.com https://s.ytimg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://utfs.io https://i.ytimg.com; font-src 'self'; frame-src 'self' https://www.youtube.com; connect-src 'self' https://*.vercel.app https://*.vercel-insights.com http://localhost:* https://* ws: wss:"
+    value: cspDirectives.join('; ')
   }
 ];
 
@@ -63,7 +75,7 @@ const nextConfig: NextConfig = {
   
   // Add image configuration
   images: {
-    domains: ['utfs.io', 'i.ytimg.com'],
+    domains: ['utfs.io', 'i.ytimg.com', ],
   },
 
   // Skip type checking and ESLint for faster builds

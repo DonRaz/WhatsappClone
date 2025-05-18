@@ -28,7 +28,7 @@ type TranslationFunction = (translateMe: string) => string;
 // Dummy quizTemplates
 const dummyQuizTemplates = {
   VIBES: (translateFn: TranslationFunction, _isShortPoll: boolean) => ({
-    subtitle: translateFn('What vibe are you aiming for for this event?'),
+    subtitle: translateFn('What vibe are you aiming for for this event? (Type or select from the list) [1/3]'),
     categoriesForStep: [
       { label: translateFn('energetic') },
       { label: translateFn('chill & relaxed') },
@@ -38,7 +38,7 @@ const dummyQuizTemplates = {
     ],
   }),
   DECADES: (translateFn: TranslationFunction, _isShortPoll: boolean) => ({
-    subtitle: translateFn('Any preferred decades for the music?'),
+    subtitle: translateFn('Any preferred decades for the music? (select one) [2/3]'),
     categoriesForStep: [
       { label: translateFn('60s') }, { label: translateFn('70s') }, { label: translateFn('80s') },
       { label: translateFn('90s') }, { label: translateFn('2000s') }, { label: translateFn('2010s') },
@@ -46,7 +46,7 @@ const dummyQuizTemplates = {
     ],
   }),
   GENRES: (translateFn: TranslationFunction, _isShortPoll: boolean) => ({
-    subtitle: translateFn('What are your go-to music genres?'),
+    subtitle: translateFn('What are your go-to music genres? (Type or select from the list) [3/3]'),
     categoriesForStep: [
       { label: translateFn('pop') }, { label: translateFn('rock') }, { label: translateFn('hip hop / rap') },
       { label: translateFn('electronic / edm') }, { label: translateFn('r&b / soul') },
@@ -261,9 +261,9 @@ const MessageTimestamp: React.FC<{ timestamp: string; color: string }> = ({ time
 	<div className={`text-xs mt-1 flex justify-end items-center ${color}`}><span>{timestamp}</span></div>
 );
 const ChatOption: React.FC<{ option: string; onClick: (option: string) => void; isSelected: boolean; isMultiAnswer: boolean; }> = ({ option, onClick, isSelected, isMultiAnswer }) => (
-	<button onClick={() => onClick(option)} className={`relative bg-accent text-primary/80 font-bold py-2 px-4 rounded-lg mb-1 w-full hover:bg-muted-foreground/10 transition-all duration-300 ${isSelected ? 'ring-2 ring-ring/20' : ''}`}>
+	<button onClick={() => onClick(option)} className={`relative bg-accent text-primary/80 font-bold py-2 px-4 rounded-lg mb-1 w-full hover:bg-muted-foreground/10 transition-all duration-300 ${isSelected ? 'ring-2 ring-ring/50' : ''}`}>
 		<span className="capitalize">{option}</span>
-		{isSelected && isMultiAnswer && <CheckCircle className="absolute right-2 top-1/2 transform -translate-y-1/2 text-ring/30" size={20} />}
+		{isSelected && isMultiAnswer && <CheckCircle className="absolute right-2 top-1/2 transform -translate-y-1/2 text-ring/80" size={20} />}
 	</button>
 );
 
@@ -807,7 +807,7 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ event, user }) => {
 	};
 
 	return (
-		<div className="flex flex-col h-[calc(100svh-10rem)] bg-gradient-to-b from-ring/20/30 via-muted-foreground/5 to-muted-foreground/10/30">
+		<div className="flex flex-col h-[calc(100svh-15rem)] bg-gradient-to-b from-ring/20/30 via-muted-foreground/5 to-muted-foreground/10/30 container">
 			<div className="bg-accent/50 text-foreground p-4 shadow-md flex items-center">
 				<img src={aiAvatarUrl} alt="DJ Avatar" width={30} height={30} className="rounded-full mr-2" style={{ objectFit: 'cover' }} />
 				<h1 className="text-xl font-bold">{t('your_dj_copilot')}</h1>

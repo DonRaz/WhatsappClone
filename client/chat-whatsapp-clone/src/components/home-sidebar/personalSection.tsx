@@ -52,7 +52,12 @@ const items = [
     icon: <MusicIcon />,
     auth: true,
 },
-
+{
+    title: "Tinder Swipe",
+    url: "tinder-swipe",
+    icon: <HeartIcon />,
+    auth: true,
+},
 ]
 
 const PersonalSection = () => {

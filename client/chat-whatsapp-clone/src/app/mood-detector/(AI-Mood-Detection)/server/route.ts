@@ -57,7 +57,7 @@ export async function POST(request: Request) {
   try {
     const requestBody = await request.json();
     console.log('imageDetection route - requestBody =', requestBody);
-    
+    const generateMockResponse = false;
     const parsedRequest = imageDetectionRequestSchema.safeParse(requestBody);
 
     if (!parsedRequest.success) {
@@ -76,16 +76,18 @@ export async function POST(request: Request) {
 
     // Generate random mock response instead of calling OpenAI
     // This avoids Content Security Policy issues with base64 images
-    const mockResponse = {
-      moods: generateRandomMoods()
-    };
+    if(generateMockResponse) {
+      const mockResponse = {
+        moods: generateRandomMoods()
+      };
 
-    return NextResponse.json({ 
-      success: true, 
-      message: mockResponse 
-    });
+      return NextResponse.json({ 
+        success: true, 
+        message: mockResponse 
+      });
+    }
 
-    /*
+    
     // Original OpenAI API code - commented out to avoid CSP issues
     const { messages } = parsedRequest.data;
 
@@ -128,7 +130,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ success: true, message: parsedResponse });
-    */
+    
     
   } catch (error) {
     console.error("Error in imageDetection route:", error);
