@@ -1,7 +1,6 @@
 'use client';
 // src/app/web-transc/components/WhisperTranscription.jsx
 import { useEffect, useState, useRef } from 'react';
-import { AIVoiceInput } from './ai-voice-input';
 import { AudioVisualizer } from './AudioVisualizer';
 import Progress from './Progress';
 import { LanguageSelector } from './LanguageSelector';
@@ -211,12 +210,6 @@ export function WhisperTranscription() {
             
             <div className="space-y-1">
               <p className="text-sm text-muted-foreground">Frequency Visualization:</p>
-              <AIVoiceInput 
-                className="w-full rounded-lg" 
-                stream={stream} 
-                visualizerBars={64}
-                demoMode={false}
-              />
             </div>
             <div className="bg-black/95 dark:bg-black/95 rounded-lg p-3 flex items-center justify-center h-[80px] overflow-hidden shadow-inner border border-gray-800">
                 <AudioVisualizer className="w-full h-full" stream={stream} />
