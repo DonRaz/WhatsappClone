@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@sraz-sw/fullstack-shared": "^1.0.3"
+    "@sraz-sw/fullstack-shared": "^1.0.3",
+    "react-error-boundary": "^6.0.0"
   }
 }
