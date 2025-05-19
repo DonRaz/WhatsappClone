@@ -1,6 +1,6 @@
 "use client";
 
-import { HomeIcon, MessageCircleIcon, UsersIcon, PhoneCallIcon, HistoryIcon, HeartIcon, ImageIcon, BabyIcon, MusicIcon } from "lucide-react";
+import { HomeIcon, MessageCircleIcon, UsersIcon, PhoneCallIcon, HistoryIcon, HeartIcon, ImageIcon, BabyIcon, MusicIcon, Type } from "lucide-react";
 import { SidebarGroup, 
     SidebarGroupContent, 
     SidebarMenu, 
@@ -58,6 +58,13 @@ const items = [
     icon: <HeartIcon />,
     auth: true,
 },
+{
+    title: "Transcription",
+    url: "web-transc",
+    icon: <Type />,
+    auth: true,
+},
+
 ]
 
 const PersonalSection = () => {
