@@ -1,6 +1,6 @@
 "use client";
 
-import { HomeIcon, MessageCircleIcon, UsersIcon, PhoneCallIcon, HistoryIcon, HeartIcon, ImageIcon, BabyIcon, MusicIcon, Type } from "lucide-react";
+import { HomeIcon, MessageCircleIcon, UsersIcon, PhoneCallIcon, HistoryIcon, HeartIcon, ImageIcon, BabyIcon, MusicIcon, Type, Brain } from "lucide-react";
 import { SidebarGroup, 
     SidebarGroupContent, 
     SidebarMenu, 
@@ -62,6 +62,12 @@ const items = [
     title: "Transcription",
     url: "/portfolio-sraz/web-transc",
     icon: <Type />,
+    auth: true,
+},
+{
+    title: "Deep Learning",
+    url: "/portfolio-sraz/deep-learning",
+    icon: <Brain />,
     auth: true,
 },
 

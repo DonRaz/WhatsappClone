@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { Headphones, MessageSquare, Image as ImageIcon, Code, Sparkles, ArrowRight, Lightbulb, Keyboard } from "lucide-react";
 import ChatWithAIComponent from "./components/chatWithAI";
 
-const ChatWithAI = async () => {
+const ChatWithAI = () => {
   return (
     <div className="bg-background min-h-screen pb-10">
       {/* Hero Section */}

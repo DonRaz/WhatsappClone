@@ -578,7 +578,7 @@ const Card: React.FC<{
 						alt={overlayState.type}
 						width={200}
 						height={200}
-						style={{ width: 'auto', height: 'auto' }}
+						// style={{ width: 'auto', height: 'auto' }} // disable to emphasize for demo
 					/>
 				</motion.div>
 			)}
