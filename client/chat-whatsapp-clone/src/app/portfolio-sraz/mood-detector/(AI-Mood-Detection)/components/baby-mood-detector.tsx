@@ -403,6 +403,7 @@ export function BabyMoodDetectorComponent() {
   const [detectionsEnabled, setDetectionsEnabled] = useState(true);
   const [currentSong, setCurrentSong] = useState<SongMood | null>(null);
   const [isDetecting, setIsDetecting] = useState(false);
+  const [cameraError, setCameraError] = useState<string | null>(null);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -452,12 +453,15 @@ export function BabyMoodDetectorComponent() {
     try {
       await setupCamera();
       setLoading(false);
-      await loadModel();
-      // Don't call detectionCycle immediately, let the interval handle it
-      // detectionCycle();
+      
+      // Only load the model if camera is available
+      if (!cameraError) {
+        await loadModel();
+      }
     } catch (error) {
       console.error('Error initializing app:', error);
       setStatus('Error loading. Please refresh and try again.');
+      setLoading(false);
     }
   };
 
@@ -482,13 +486,22 @@ export function BabyMoodDetectorComponent() {
 
   const setupCamera = async () => {
     if (!videoRef.current) return;
-    const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } });
-    videoRef.current.srcObject = stream;
-    return new Promise<void>((resolve) => {
-      if (videoRef.current) {
-        videoRef.current.onloadedmetadata = () => resolve();
-      }
-    });
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } });
+      videoRef.current.srcObject = stream;
+      setCameraError(null);
+      return new Promise<void>((resolve) => {
+        if (videoRef.current) {
+          videoRef.current.onloadedmetadata = () => resolve();
+        }
+      });
+    } catch (error) {
+      console.error('Error accessing camera:', error);
+      setCameraError('Cannot access video feed. Camera might be in use or not available.');
+      setDetectionsEnabled(false);
+      setLoading(false);
+      return Promise.resolve(); // Continue initialization without camera
+    }
   };
 
   const loadModel = async () => {
@@ -541,9 +554,16 @@ export function BabyMoodDetectorComponent() {
     }
   }
 
-  const enableDetectionNow = () =>{
+  const enableDetectionNow = () => {
     setDetectionsEnabled(true);
-    setupCamera();     
+    setupCamera().then(() => {
+      if (!cameraError) {
+        // If camera setup was successful, load the model if it's not already loaded
+        if (!modelRef.current) {
+          loadModel();
+        }
+      }
+    });
   }
   const disableDetections = (minutes: number = 30) => {
     setDetectionsEnabled(false);
@@ -647,7 +667,7 @@ export function BabyMoodDetectorComponent() {
 
 
   const detectionCycle = useCallback(async () => {
-    if (!detectionsEnabled || isDetecting) return;
+    if (!detectionsEnabled || isDetecting || cameraError) return;
 
     try {
       setIsDetecting(true);
@@ -664,7 +684,7 @@ export function BabyMoodDetectorComponent() {
     } finally {
       setIsDetecting(false);
     }
-  }, [detectionsEnabled, isDetecting]);
+  }, [detectionsEnabled, isDetecting, cameraError]);
 
   useEffect(() => {
     const intervalId = setInterval(detectionCycle, detectionDelay)
@@ -786,16 +806,18 @@ export function BabyMoodDetectorComponent() {
 
 
       <div className="flex flex-col md:flex-row justify-between gap-6">
-        <VideoContainer
-          videoRef={videoRef}
-          currentMood={currentMood}
-          status={status}
-          detectionsEnabled={detectionsEnabled}
-          // setDetectionsEnabled={setDetectionsEnabled}
-          toggleDetections={toggleDetections}
-        />
-      <MoodLog moodLog={moodLog} />
-
+        {cameraError ? (
+          <CameraErrorDisplay error={cameraError} />
+        ) : (
+          <VideoContainer
+            videoRef={videoRef}
+            currentMood={currentMood}
+            status={status}
+            detectionsEnabled={detectionsEnabled}
+            toggleDetections={toggleDetections}
+          />
+        )}
+        <MoodLog moodLog={moodLog} />
       </div>
       <canvas ref={canvasRef} style={{ display: 'none' }} />
       <audio ref={audioRef} src="/sounds/segment_1.mp3" />
@@ -811,5 +833,38 @@ function LoadingOverlay() {
         <span className="text-xl">Loading...</span>
       </div>
     </div>
+  );
+}
+
+function CameraErrorDisplay({ error }: { error: string }) {
+  return (
+    <Card className="w-full md:w-3/5">
+      <CardContent className="p-4">
+        <div className="relative aspect-video bg-muted-foreground/10 rounded-lg overflow-hidden flex items-center justify-center">
+          <div className="text-center p-4">
+            <div className="mb-4 text-destructive">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M10.5 20.5 3 11c-.7-1.2-.7-2.8 0-4l7.5-9.5L19 11c.7 1.2.7 2.8 0 4l-8.5 13.5z"></path>
+                <path d="M12 8v4"></path>
+                <path d="M12 16h.01"></path>
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold mb-2">Camera Error</h3>
+            <p className="text-muted-foreground">{error}</p>
+            <p className="mt-4 text-sm">Please ensure your camera is connected and permissions are granted.</p>
+            <Button 
+              onClick={() => window.location.reload()} 
+              className="mt-4"
+            >
+              Retry Camera Access
+            </Button>
+          </div>
+        </div>
+        <div className="text-center text-xl font-semibold mt-4">
+          Current Mood: <span className="text-2xl">Unknown</span>
+        </div>
+        <div className="text-center font-bold mt-2 text-muted-foreground">Camera not available</div>
+      </CardContent>
+    </Card>
   );
 }

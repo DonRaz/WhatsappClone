@@ -326,6 +326,7 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ event, user }) => {
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 	const [textAreaContent, setTextAreaContent] = useState('');
 	const endOfMessagesRef = useRef<HTMLDivElement>(null);
+	const chatContainerRef = useRef<HTMLDivElement>(null);
 	const aiAvatarUrl = '/portfolio-demo/tinder-swipe/images/dj-seeking.webp';
 	const [modalImage, setModalImage] = useState<string | null>(null);
 	const questions: Message[] = useMemo(() => generateQuestions(t), []);
@@ -338,8 +339,23 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ event, user }) => {
 	const disableTextArea = isSending || isSingleAnswerQuestion;
 	const disableSendButton = isSending || isSingleAnswerQuestion || (textAreaContent.trim() === '' && images.length === 0);
 
-	useEffect(() => { endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
-	useEffect(() => { if (messages.length === 0 && questions.length > 0) { setMessages([questions[0]]); } }, [questions, messages.length]); // Added messages.length to dependencies
+	// Updated scroll behavior to only scroll the chat container
+	useEffect(() => { 
+		if (endOfMessagesRef.current && chatContainerRef.current) {
+			// Scroll only within the chat container
+			endOfMessagesRef.current.scrollIntoView({ 
+				behavior: 'smooth',
+				block: 'end',
+				inline: 'nearest'
+			});
+		}
+	}, [messages]);
+	
+	useEffect(() => { 
+		if (messages.length === 0 && questions.length > 0) { 
+			setMessages([questions[0]]); 
+		} 
+	}, [questions, messages.length]);
 
     // Add clipboard paste handling
     useEffect(() => {
@@ -815,7 +831,7 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ event, user }) => {
 				<img src={aiAvatarUrl} alt="DJ Avatar" width={30} height={30} className="rounded-full mr-2" style={{ objectFit: 'cover' }} />
 				<h1 className="text-xl font-bold">{t('your_dj_copilot')}</h1>
 			</div>
-			<div className="flex-1 overflow-y-auto p-4 bg-opacity-10 bg-accent backdrop-blur-sm">
+			<div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 bg-opacity-10 bg-accent backdrop-blur-sm">
 				{messages.map(msg => (
           <ChatMessage 
             key={msg.id} 

@@ -303,7 +303,7 @@ const AudioPlayer: React.FC<{ src: string }> = ({ src }) => {
 	return (
 		<div className="mt-2">
 			<audio ref={audioRef} />
-			<button onClick={togglePlayPause} className=" text-white4_dd px-4 py-2 rounded">
+			<button onClick={togglePlayPause} className=" text-white4_dd px-4 py-2 rounded animate-bounce">
 				{isUserEnabledPlayback && playableFileName === src ? (
 					<Volume2 className="w-6 h-6" />
 				) : (
@@ -752,8 +752,8 @@ const CardStack: React.FC<{ cards: Card[]; onGoBack?: () => void }> = ({ cards, 
 // Main App Component
 const TinderCardsFrontendDemo: React.FC = () => {
 	return (
-		<div className="flex items-center justify-center h-[calc(60svh)] bg-gray-100 dark:bg-gray-900">
-			<div className="relative w-full  h-[calc(60svh)]">
+		<div className="flex items-center justify-center h-full bg-gray-100 dark:bg-gray-900">
+			<div className="relative w-full h-full">
 				<CardStack cards={mockCards} />
 			</div>
 		</div>
