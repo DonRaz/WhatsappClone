@@ -119,12 +119,12 @@ export default function ModernHero() {
 											,<br />
 											&nbsp;&nbsp;
 											<span className="text-green-600 dark:text-green-400">expertise</span>: [
-											<span className="text-orange-600 dark:text-orange-400">'AI'</span>,{' '}
+											<span className="text-orange-600 dark:text-orange-400">'React'</span>,{' '}
 											<span className="text-orange-600 dark:text-orange-400">
 												{/* 'Computer Vision' */}
                         'Python'
 											</span>
-											, <span className="text-orange-600 dark:text-orange-400">'React'</span>],
+											, <span className="text-orange-600 dark:text-orange-400">'AI'</span>],
 											<br />
 											&nbsp;&nbsp;
 											<span className="text-green-600 dark:text-green-400">passions</span>:{' '}

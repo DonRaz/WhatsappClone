@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "@sendgrid/mail": "^8.1.5",
     "@sraz-sw/fullstack-shared": "^1.0.3",
-    "react-error-boundary": "^6.0.0"
+    "react-error-boundary": "^6.0.0",
+    "resend": "^4.5.1"
   }
 }

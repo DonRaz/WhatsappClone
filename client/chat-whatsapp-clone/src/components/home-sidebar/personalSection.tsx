@@ -32,44 +32,50 @@ const items = [
     title: "Portfolio",
     url: "/portfolio-sraz",
     icon: <ImageIcon />,
-    auth: true,
+    auth: false,
 },
-{
-    title: "Baby Mood Detector",
-    url: "/portfolio-sraz/mood-detector",
-    icon: <BabyIcon />,
-    auth: true,
-},
-{
-    title: "Chat with AI",
-    url: "/portfolio-sraz/chat-with-ai",
-    icon: <MessageCircleIcon />,
-    auth: true,
-},
-{
-    title: "Dtrack Finder",
-    url: "/portfolio-sraz/dtrack-finder",
-    icon: <MusicIcon />,
-    auth: true,
-},
-{
-    title: "Tinder Swipe",
-    url: "/portfolio-sraz/tinder-swipe",
-    icon: <HeartIcon />,
-    auth: true,
-},
-{
-    title: "Transcription",
-    url: "/portfolio-sraz/web-transc",
-    icon: <Type />,
-    auth: true,
-},
-{
-    title: "Deep Learning",
-    url: "/portfolio-sraz/deep-learning",
-    icon: <Brain />,
-    auth: true,
-},
+// {
+//     title: "Baby Mood Detector",
+//     url: "/portfolio-sraz/mood-detector",
+//     icon: <BabyIcon />,
+//     auth: false,
+// },
+// {
+//     title: "Chat with AI",
+//     url: "/portfolio-sraz/chat-with-ai",
+//     icon: <MessageCircleIcon />,
+//     auth: false,
+// },
+// {
+//     title: "DTrack Finder",
+//     url: "/portfolio-sraz/dtrack-finder",
+//     icon: <MusicIcon />,
+//     auth: false,
+// },
+// {
+//     title: "Tinder Swipe",
+//     url: "/portfolio-sraz/tinder-swipe",
+//     icon: <HeartIcon />,
+//     auth: false,
+// },
+// {
+//     title: "Transcription",
+//     url: "/portfolio-sraz/web-transc",
+//     icon: <Type />,
+//     auth: false,
+// },
+// {
+//     title: "Deep Learning",
+//     url: "/portfolio-sraz/deep-learning",
+//     icon: <Brain />,
+//     auth: false,
+// },
+// {
+//     title: "WhatsApp Clone",
+//     url: "/",
+//     icon: <MessageCircleIcon />,
+//     auth: false,
+// },
 
 ]
 

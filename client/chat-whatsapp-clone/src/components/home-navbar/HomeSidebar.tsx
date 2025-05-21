@@ -4,6 +4,8 @@ import { Separator } from "../ui/separator";
 import PersonalSection from "../home-sidebar/personalSection";
 
 import BottomSection from "../home-sidebar/BottomSection";
+import AIPortfolioSection from "../home-sidebar/AIPortfolioSection";
+import FullstackPortfolioSection from "../home-sidebar/FullstackPortfolioSection";
 
 const HomeSidebar = () => {
     return (
@@ -12,6 +14,8 @@ const HomeSidebar = () => {
                 <MainSection/>
                 <Separator/>
                 <PersonalSection/>
+                <FullstackPortfolioSection/>
+                <AIPortfolioSection/>
                 <div className="mt-auto">
                     <Separator/>
                     <BottomSection/>

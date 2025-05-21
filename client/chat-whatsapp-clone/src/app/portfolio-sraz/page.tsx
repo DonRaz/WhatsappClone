@@ -340,7 +340,7 @@ export default function Portfolio() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20" ref={contactRef}>
+      {/* <section id="contact" className="py-20" ref={contactRef}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.h2
             initial={{ opacity: 0 }}
@@ -450,10 +450,10 @@ export default function Portfolio() {
             </motion.div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Footer */}
-      <footer className="py-10 bg-muted/20">
+      {/* <footer className="py-10 bg-muted/20">
         <div className="container mx-auto px-4 text-center">
           <p className="text-muted-foreground">
             © {new Date().getFullYear()} Shahar Raz. All rights reserved.
@@ -470,7 +470,7 @@ export default function Portfolio() {
             </a>
           </div>
         </div>
-      </footer>
+      </footer> */}
     </div>
   );
 }

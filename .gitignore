@@ -11,3 +11,8 @@
 # Rest of existing .gitignore content
 # ... existing code ... 
 .vercel
+
+
+# node modules from all subfolders etc
+**/node_modules
+

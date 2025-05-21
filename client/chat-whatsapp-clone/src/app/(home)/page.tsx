@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Iphone15Pro } from '@/components/ui/Iphone15ProFrame';
 import { CustomKanban } from '@/components/CustomKanban';
+import Footer from '../portfolio-sraz/(sections)/(footer)/components/footer';
 
 const HomePage = () => {
   const FeatureItem = ({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) => (
@@ -455,12 +456,8 @@ const HomePage = () => {
           <p className="text-muted-foreground">
             Built for demonstration purposes • <span className="font-medium">WhatsApp Clone</span>
           </p>
-          <div className="mt-4 flex justify-center space-x-4">
-            <Link href="/portfolio" className="text-muted-foreground hover:text-primary/90 transition-colors">Portfolio</Link>
-            <Link href="/linkedin" className="text-muted-foreground hover:text-primary/90 transition-colors">LinkedIn</Link>
-            <Link href="/contact" className="text-muted-foreground hover:text-primary/90 transition-colors">Contact</Link>
-          </div>
         </div>
+        <Footer />
       </footer>
     </div>
   );
