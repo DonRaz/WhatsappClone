@@ -1,6 +1,6 @@
 "use client";
 
-import { HomeIcon, MessageCircleIcon, UsersIcon, PhoneCallIcon, HistoryIcon, HeartIcon, ImageIcon, BabyIcon, MusicIcon, Type, Brain } from "lucide-react";
+import { HomeIcon, MessageCircleIcon, UsersIcon, PhoneCallIcon, HistoryIcon, HeartIcon, ImageIcon, BabyIcon, MusicIcon, Type, Brain, Calculator } from "lucide-react";
 import { SidebarGroup, 
     SidebarGroupContent, 
     SidebarMenu, 
@@ -29,6 +29,12 @@ const items = [
     icon: <MessageCircleIcon />,
     auth: false,
 },
+{
+    title: "Invested AI",
+    url: "/portfolio-sraz/investment-calc",
+    icon: <Calculator />,
+    auth: false,
+}
 
 ]
 

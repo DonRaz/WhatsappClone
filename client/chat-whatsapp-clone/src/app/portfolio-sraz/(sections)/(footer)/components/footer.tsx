@@ -35,6 +35,7 @@ import {
 	Camera,
 	CameraOff,
 	AlertCircle,
+	Calculator,
 } from 'lucide-react';
 import { DevicePermissions } from '@/components/ui/device-permissions';
 
@@ -297,6 +298,13 @@ export function Footer() {
 							>
 								<MessageSquare className="h-4 w-4" />
 								WhatsApp Clone
+							</a>
+							<a
+								href="/portfolio-sraz/investment-calc"
+								className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+							>
+								<Calculator className="h-4 w-4" />
+								Invested AI
 							</a>
 						</nav>
 					</div>
