@@ -347,8 +347,8 @@ export function Footer() {
 									<TooltipTrigger asChild>
 										<a href="https://linkedin.com/in/shaharaz3" target="_blank" rel="noopener noreferrer">
 											<Button variant="outline" size="icon" className="w-full flex items-center justify-start gap-2 rounded-md">
-												<Linkedin className="ms-1 h-4 w-4" />
-												<span className="text-sm">LinkedIn</span>
+												<Linkedin className="ms-1 h-4 w-4 flex-shrink-0" />
+												<span className="text-sm truncate">LinkedIn</span>
 											</Button>
 										</a>
 									</TooltipTrigger>
@@ -362,8 +362,8 @@ export function Footer() {
 									<TooltipTrigger asChild>
 										<a href="https://github.com/DonRaz/WhatsappClone/tree/adding_portfolio/client/chat-whatsapp-clone/src/app/portfolio-sraz" target="_blank" rel="noopener noreferrer">
 											<Button variant="outline" size="icon" className="w-full flex items-center justify-start gap-2 rounded-md">
-												<Github className="ms-1 h-4 w-4" />
-												<span className="text-sm">GitHub (Recent)</span>
+												<Github className="ms-1 h-4 w-4 flex-shrink-0" />
+												<span className="text-sm truncate">GitHub (Recent)</span>
 											</Button>
 										</a>
 									</TooltipTrigger>
@@ -377,8 +377,8 @@ export function Footer() {
 									<TooltipTrigger asChild>
 										<a href="https://github.com/ShahaRaz" target="_blank" rel="noopener noreferrer">
 											<Button variant="outline" size="icon" className="w-full flex items-center justify-start gap-2 rounded-md">
-												<Github className="ms-1 h-4 w-4" />
-												<span className="text-sm">GitHub (Previous)</span>
+												<Github className="ms-1 h-4 w-4 flex-shrink-0" />
+												<span className="text-sm truncate">GitHub (Previous)</span>
 											</Button>
 										</a>
 									</TooltipTrigger>
@@ -392,8 +392,8 @@ export function Footer() {
 									<TooltipTrigger asChild>
 										<a href="/portfolio/Shahar-Raz_resume.pdf" target="_blank" rel="noopener noreferrer">
 											<Button variant="outline" size="icon" className="w-full flex items-center justify-start gap-2 rounded-md">
-												<FileText className="ms-1 h-4 w-4" />
-												<span className="text-sm">Resume</span>
+												<FileText className="ms-1 h-4 w-4 flex-shrink-0" />
+												<span className="text-sm truncate">Resume</span>
 											</Button>
 										</a>
 									</TooltipTrigger>

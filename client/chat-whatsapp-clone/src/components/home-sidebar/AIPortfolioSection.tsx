@@ -1,6 +1,6 @@
 "use client";
 
-import { HomeIcon, MessageCircleIcon, UsersIcon, PhoneCallIcon, HistoryIcon, HeartIcon, ImageIcon, BabyIcon, MusicIcon, Type, Brain } from "lucide-react";
+import { HomeIcon, MessageCircleIcon, UsersIcon, PhoneCallIcon, HistoryIcon, HeartIcon, ImageIcon, BabyIcon, MusicIcon, Type, Brain, FileTextIcon } from "lucide-react";
 import { SidebarGroup, 
     SidebarGroupContent, 
     SidebarMenu, 
@@ -35,7 +35,12 @@ const items = [
     icon: <Brain />,
     auth: false,
 },
-
+{
+    title: "OCR",
+    url: "/ocr-test",
+    icon: <FileTextIcon />,
+    auth: false,
+}
 ]
 
 const AIPortfolioSection = () => {

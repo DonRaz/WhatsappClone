@@ -9,6 +9,7 @@ import messagesRouter from './routers/messagesRouter';
 import conversationsRouter from './routers/conversationsRouter';
 import authRouter from './routers/authRouter';
 import uploadthingRouter from './routers/uploadthingRouter';
+import docsOcrRouter from './routers/docsOcrRouter';
 import { initializeRealtimeProvider } from './realtime';
 
 // Load environment variables - Prisma will have already loaded .env
@@ -98,7 +99,7 @@ app.use('/users', usersRouter);
 app.use('/messages', messagesRouter);
 app.use('/conversations', conversationsRouter);
 app.use('/api/uploadthing', uploadthingRouter); // couldn't remove 'api/' since uploadthing is not working without it
-
+app.use('/ocr', docsOcrRouter);
 // Special error handler for uploadthing routes to provide more detailed error info
 app.use('/uploadthing', (err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error('UploadThing error:', {
