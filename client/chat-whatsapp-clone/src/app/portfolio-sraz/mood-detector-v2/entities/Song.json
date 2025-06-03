@@ -1,0 +1,42 @@
+{
+    "name": "Song",
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string",
+        "description": "Song title"
+      },
+      "youtube_id": {
+        "type": "string",
+        "description": "YouTube video ID"
+      },
+      "artist": {
+        "type": "string",
+        "description": "Artist name"
+      },
+      "moods": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "List of moods this song matches"
+      },
+      "spotify_url": {
+        "type": "string",
+        "description": "Spotify track URL"
+      },
+      "apple_music_url": {
+        "type": "string",
+        "description": "Apple Music track URL"
+      },
+      "duration": {
+        "type": "number",
+        "description": "Song duration in seconds"
+      }
+    },
+    "required": [
+      "title",
+      "youtube_id",
+      "moods"
+    ]
+  }

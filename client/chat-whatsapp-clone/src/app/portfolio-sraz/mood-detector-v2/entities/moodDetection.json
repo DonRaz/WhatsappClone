@@ -1,0 +1,65 @@
+{
+    "name": "MoodDetection",
+    "type": "object",
+    "properties": {
+      "detected_mood": {
+        "type": "string",
+        "enum": [
+          "happy",
+          "sad",
+          "sleepy",
+          "angry",
+          "neutral"
+        ],
+        "description": "Detected mood from facial analysis"
+      },
+      "confidence_score": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1,
+        "description": "Confidence level of mood detection"
+      },
+      "face_image_url": {
+        "type": "string",
+        "description": "URL of captured face image"
+      },
+      "detection_method": {
+        "type": "string",
+        "enum": [
+          "automatic",
+          "manual"
+        ],
+        "default": "automatic",
+        "description": "How the mood was detected"
+      },
+      "song_played": {
+        "type": "string",
+        "description": "Song that was selected for this mood"
+      },
+      "mood_scores": {
+        "type": "object",
+        "description": "All mood scores from detection",
+        "properties": {
+          "happy": {
+            "type": "number"
+          },
+          "sad": {
+            "type": "number"
+          },
+          "sleepy": {
+            "type": "number"
+          },
+          "angry": {
+            "type": "number"
+          },
+          "neutral": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "required": [
+      "detected_mood",
+      "confidence_score"
+    ]
+  }

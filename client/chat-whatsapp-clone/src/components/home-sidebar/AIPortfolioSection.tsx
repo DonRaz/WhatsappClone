@@ -35,12 +35,12 @@ const items = [
     icon: <Brain />,
     auth: false,
 },
-{
-    title: "OCR",
-    url: "/ocr-test",
-    icon: <FileTextIcon />,
-    auth: false,
-}
+// {
+//     title: "OCR",
+//     url: "/ocr-test",
+//     icon: <FileTextIcon />,
+//     auth: false,
+// }
 ]
 
 const AIPortfolioSection = () => {

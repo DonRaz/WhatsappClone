@@ -1,0 +1,31 @@
+zebra
+apple
+banana
+
+
+This is a medium-length line with some content that will help test the sorting algorithm.
+a
+zzz
+aaa
+This line contains multiple words and is somewhat longer than the previous ones to test memory management.
+
+
+orange
+grape
+watermelon
+A very long line that contains a lot of text and characters to test how the algorithm handles lines that consume more memory than typical short lines, but still fits within the memory constraints of the sorting algorithm implementation.
+
+
+pineapple
+strawberry
+blueberry
+
+
+Short line here.
+Another medium-length line that contains enough text to consume a reasonable amount of memory during the sorting process.
+x
+y
+z
+
+
+final line without newline 
